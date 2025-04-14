@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\com.openschool.hw.starter.config.LogAutoConfiguration
