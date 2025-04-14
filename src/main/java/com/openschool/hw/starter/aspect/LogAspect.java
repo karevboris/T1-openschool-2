@@ -2,20 +2,16 @@ package com.openschool.hw.starter.aspect;
 
 import com.openschool.hw.starter.aspect.exception.CustomException;
 import com.openschool.hw.starter.config.LogProperties;
-import com.openschool.hw.starter.dto.TaskDto;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Aspect
-@Component
 public class LogAspect {
 
     private final Logger log = LoggerFactory.getLogger(LogAspect.class);
@@ -38,21 +34,20 @@ public class LogAspect {
 
     }
 
-    @AfterReturning(value = "@annotation(com.openschool.hw.starter.aspect.annotation.Logging)", returning = "task")
-    public void logResult(JoinPoint joinPoint, TaskDto task) {
+    @AfterReturning(value = "@annotation(com.openschool.hw.starter.aspect.annotation.Logging)", returning = "object")
+    public void logResult(JoinPoint joinPoint, Object object) {
         log.atLevel(level).log("Method {}#{} returned {}",
                 joinPoint.getSignature().getDeclaringTypeName(),
                 joinPoint.getSignature().getName(),
-                task);
+                object);
     }
 
-    @AfterReturning(value = "@annotation(com.openschool.hw.starter.aspect.annotation.Logging)", returning = "tasks")
-    public void logResult(JoinPoint joinPoint, List<TaskDto> tasks) {
-        log.atLevel(level).log("Method {}#{} returned {} tasks with ids: {}",
+    @AfterReturning(value = "@annotation(com.openschool.hw.starter.aspect.annotation.Logging)", returning = "objects")
+    public void logResult(JoinPoint joinPoint, List<Object> objects) {
+        log.atLevel(level).log("Method {}#{} returned {} objects",
                 joinPoint.getSignature().getDeclaringTypeName(),
                 joinPoint.getSignature().getName(),
-                tasks.size(),
-                tasks.stream().map(TaskDto::getId).collect(Collectors.toList()));
+                objects.size());
 
     }
 
